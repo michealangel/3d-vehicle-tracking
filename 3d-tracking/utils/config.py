@@ -7,7 +7,6 @@ from easydict import EasyDict as edict
 cfg = edict()
 # ROOT path is at 3d-vehicle-tracking/3d-tracking
 cfg.ROOT = abspath(join(dirname(__file__), os.pardir))
-print (cfg.ROOT)
 cfg.CHECKPOINT_PATH = join(cfg.ROOT, 'checkpoint')
 cfg.OUTPUT_PATH = join(cfg.ROOT, 'output')
 cfg.DATA_PATH = join(cfg.ROOT, 'data')

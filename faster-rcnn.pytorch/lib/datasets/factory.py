@@ -61,7 +61,6 @@ for split in ['train', 'val', 'test']:
     name = 'gta_det_{}'.format(split)
     __sets[name] = (
         lambda split=split, data_path=data_path: gta_det(split, data_path))
-    print(data_path,'ciao')
 
 # set up image net.
 for split in ['train', 'val', 'val1', 'val2', 'test']:
@@ -76,14 +75,12 @@ KITTI_devkit_path = 'data/kitti_tracking'
 for split in ['training', 'testing']:
     name = 'kitti_{}'.format(split)
     __sets[name] = (lambda split=split: kitti(split, KITTI_devkit_path))
-    
 
 
 def get_imdb(name):
     """Get an imdb (image database) by name."""
     if name not in __sets:
         raise KeyError('Unknown dataset: {}'.format(name))
-    print(__sets[name], "Ciao, nome")
     return __sets[name]()
 
 

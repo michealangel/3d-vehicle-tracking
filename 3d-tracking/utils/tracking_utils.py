@@ -299,9 +299,7 @@ def compute_boxoverlap_with_depth(det, detbox, detdepth, detdim,
     
     # Sum up all the available region of each tracker
     for i in range(len(trkedboxes)):
-        #print ('trkdekbox[i]=',trkedboxes[i])
-        #print('detbox=',detbox)
-        iou_2d[i] = compute_iou(trkedboxes[i], detbox[:4])
+        iou_2d[i] = compute_iou(trkedboxes[i], detbox)
     depth_weight = np.exp(-abs(trkeddepths - detdepth)/(detdepth + 1e-6))
 
     #print(iou_2d, depth_weight, iou_2d*depth_weight)

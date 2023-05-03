@@ -11,9 +11,6 @@ Dataset downloading script for monocular 3D Tracking
 link_root = 'http://dl.yf.io/bdd-data/3d-vehicle-tracking/'
 path_root = './data/zip/'
 
-
-
-
 _items = {
 'note': ['README.md'],
 'checkpoint': ['3d_tracking_checkpoint.zip', 'faster_rcnn_checkpoint.zip'],

@@ -93,7 +93,6 @@ class Mono3DTracker:
                 [n for n in os.listdir(args.path)
                  if n.endswith('bdd_roipool_output.pkl')])
             self.label_paths = [os.path.join(args.path, n) for n in input_names]
-        
         elif args.path.endswith('bdd_roipool_output.pkl'):
             print('Load single pkl file')
             self.label_paths = [args.path]
@@ -102,11 +101,7 @@ class Mono3DTracker:
             self.label_paths = args.path
         else:
             self.label_paths = []
-        print(args.path)
-        return
 
-        
-    
     def run_app(self):
         """
         Entry function of calling parallel tracker on sequences
@@ -114,7 +109,6 @@ class Mono3DTracker:
         self.seq_gt_name = os.path.join(os.path.dirname(self.args.path),
                                          'gt.json')
         self.seq_pd_name = self.args.out_path + '_pd.json'
-        
 
         if isinstance(self.label_paths, str):
             label_paths = pickle.load(open(self.label_paths, 'rb'))

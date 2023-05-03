@@ -8,7 +8,7 @@ import numpy as np
 from tqdm import tqdm
 
 from pymot import MOTEvaluation
-import os, psutil
+
 
 def parse_args():
     """Parse input arguments."""
@@ -39,10 +39,8 @@ def load_label_path(json_path):
             paths.append(os.path.join(json_path, fn))
 
     assert len(paths), "Not label files found in {}".format(json_path)
-    print(len(paths[1:90]),'satania')
-    
-    raw_list = [json.load(open(_l, 'r')) for _l in paths[1:90]]
-    print('satania2')
+
+    raw_list = [json.load(open(_l, 'r')) for _l in paths]
 
     seqs = []
     for seq_idx, seq in enumerate(raw_list):
@@ -67,6 +65,7 @@ def load_label_path(json_path):
     seq_list = [{'frames': frs, 
                 'class': 'video', 
                 'filename': _l} for frs, _l in zip(seqs, paths) ]
+
     return seq_list
 
 
@@ -190,11 +189,8 @@ def main():
     seq_gt_name = os.path.join(args.gt_path, 'gt.json')
     seq_pd_name = os.path.join(args.pd_path, 'data')
 
-    seq_gt_list = json.load(open(seq_gt_name, 'r'))   
-    seq_gt_list=seq_gt_list[1:90]
+    seq_gt_list = json.load(open(seq_gt_name, 'r'))
     seq_pd_list = load_label_path(seq_pd_name)
-    
-
 
     te = TrackEvaluation(
             seq_gt_list, 

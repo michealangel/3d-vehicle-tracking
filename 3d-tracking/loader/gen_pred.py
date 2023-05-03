@@ -39,9 +39,7 @@ args = parse_args()
 
 if args.set == 'gta':
     # GTA training / testing set with tracking / detection
-    #modifica mia
-    DATASET = cfg.GTA.TRACKING#prendo una serie di attributi legati a tracking, dal file cfg dove è definito.
-    
+    DATASET = cfg.GTA.TRACKING
 
     det_name = os.path.join(DATASET.PATH,
                             'gta_{}_detections.pkl'.format(args.split))
@@ -50,7 +48,6 @@ if args.set == 'gta':
     DATASET.LABEL_PATH = DATASET.LABEL_PATH.replace('train', args.split)
     DATASET.PRED_PATH = DATASET.PRED_PATH.replace('train', args.split)
     DATASET.IM_PATH = DATASET.IM_PATH.replace('train', args.split)
-    #dovrebbe solo fare una serie di modifiche su percorsi e robe simili.
 else:
     # KITTI tracking / object dataset
     if args.kitti_task == 'detect':
@@ -89,7 +86,6 @@ def load_label_path(json_path, pattern='final.json'):
     assert len(paths), "Not label files found in {}".format(json_path)
 
     return paths
-    #vado a cercare dei file com una certa etichetta ('final.json')
 
 
 class Dataset():
@@ -173,6 +169,7 @@ class Dataset():
             seq_data.append(filename)
 
         print("Saving {} frames...".format(idx))
+
         return seq_data
 
 

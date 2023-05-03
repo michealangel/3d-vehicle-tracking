@@ -10,7 +10,6 @@ from setuptools import setup
 from torch.utils.cpp_extension import CUDA_HOME
 from torch.utils.cpp_extension import CppExtension
 from torch.utils.cpp_extension import CUDAExtension
-#from Cython.Build import cythonize
 
 requirements = ["torch", "torchvision"]
 
@@ -64,6 +63,5 @@ setup(
     packages=find_packages(exclude=("configs", "tests",)),
     # install_requires=requirements,
     ext_modules=get_extensions(),
-    include_dirs=[numpy.get_include()]
     cmdclass={"build_ext": torch.utils.cpp_extension.BuildExtension},
 )

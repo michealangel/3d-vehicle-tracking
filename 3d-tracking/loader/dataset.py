@@ -82,7 +82,7 @@ class Dataset(Dataset):
 
         self.label_name = []
         self.seq_len = []
-        print("Reading {} ...".format(json_path)) #fino a qui è okay
+        print("Reading {} ...".format(json_path))
         json_ext = 'bdd.json'
         if os.path.isdir(json_path):
             print('Load lists of json files')
@@ -95,8 +95,6 @@ class Dataset(Dataset):
         elif json_path.endswith(json_ext):
             print('Load single json file')
             self.label_name = bh.read_labels(json_path)
-            #print(self.label_name, 'ciao')
-
             self.seq_len.append(len(self.label_name))
         else:
             print('Load single bundled json file')
