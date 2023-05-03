@@ -83,7 +83,7 @@ def parse_args():
     parser.add_argument('--check-freq', default=1, type=int,
                         help='saving ckpt frequency (default: 1)')
     parser.add_argument('--resume', default=None, type=str, metavar='PATH',
-                        help='path to latest checkpoint (default: none)')
+                        help='path to latest checkpoint ')
     parser.add_argument('--json_path', dest='json_path', default=None,
                         help='path to json files')
     parser.add_argument('-b', '--batch_size', default=64, type=int,
@@ -103,8 +103,13 @@ def parse_args():
     parser.add_argument('--note', dest='note',
                         default='Tell me before kill it, thanks.')
     args = parser.parse_args()
+    #CUDA_VISIBLE_DEVICES=0
+    a=torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print( a,'ciaoooooo')
     args.cuda = not args.no_cuda and torch.cuda.is_available()
     args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #args.json_path='/media/michelangelo/7E9264A192645F9F/data/gta5-tracking/val/pred'
+    #print(args.json_path)
 
     return args
 
@@ -163,6 +168,7 @@ def run_training(model, args):
                                      amsgrad=True)
 
     # optionally resume from a checkpoint
+    print (args.resume)
     if args.resume:
         nu.load_checkpoint(model, args.resume, optimizer=optimizer)
 
@@ -234,6 +240,7 @@ def train_model(args, train_loader, model, optimizer, epoch, phase, logger):
     end = time.time()
     for i, (image, box_info) in enumerate(iter(train_loader)):
         # measure data loading time
+       
         data_time.update(time.time() - end)
         end = time.time()
 
@@ -303,6 +310,7 @@ def val_model(args, val_loader, model, epoch, phase, logger):
         'a1', 'a2', 'a3', 'AOS', 'DIM', 'CEN')
 
     for i, (image, box_info) in enumerate(iter(val_loader)):
+        
 
         with torch.no_grad():
             box_output, targets = model(image, box_info, args.device, 'test')

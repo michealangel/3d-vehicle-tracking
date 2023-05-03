@@ -4,83 +4,35 @@ from glob import glob
 
 import numpy as np
 from nms_cpu import nms_cpu as nms
-
+from itertools import islice
 
 '''
 load annotation from BDD format json files
 '''
-def load_annos_bdd(path, folder=True, json_name='*/*_final.json'):
-    print("Loading GT file {} ...".format(path))
-    if folder:
-        jsonlist = sorted(glob(osp.join(path, json_name)))
-    else:
-        jsonlist = json.load(open(path, 'r'))
-
-    assert len(jsonlist) > 0, "{} has no files".format(path)
-
-    anno = []
-    for idx, trackjson in enumerate(jsonlist):
-        if folder:
-            trackinfo = json.load(open(trackjson, 'r'))
-        else:
-            trackinfo = trackjson
-
-        annotations = {}
-        annotations.update({
-            'name': [],
-            'truncated': [],
-            'occluded': [],
-            'alpha': [],
-            'bbox': [],
-            'dimensions': [],
-            'location': [],
-            'orientation': []
-        })
-
-        for obj in trackinfo['labels']:
-            if not obj['attributes']['ignore']:
-                annotations['name'].append('Car')
-                annotations['truncated'].append(obj['attributes']['truncated'])
-                annotations['occluded'].append(obj['attributes']['occluded'])
-                annotations['bbox'].append(
-                            [obj['box2d']['x1'], obj['box2d']['y1'],
-                             obj['box2d']['x2'], obj['box2d']['y2']])
-                annotations['alpha'].append(obj['box3d']['alpha'])
-                annotations['dimensions'].append(obj['box3d']['dimension'])
-                annotations['location'].append(obj['box3d']['location'])
-                annotations['orientation'].append(obj['box3d']['orientation'])
-
-        annotations['name'] = np.array(annotations['name'])
-        annotations['truncated'] = np.array(annotations['truncated'])
-        annotations['occluded'] = np.array(annotations['occluded'])
-        annotations['alpha'] = np.array(annotations['alpha']).astype(
-            'float')
-        annotations['bbox'] = np.array(annotations['bbox']).astype(
-            'float').reshape(-1, 4)
-        annotations['dimensions'] = np.array(
-            annotations['dimensions']).reshape(-1, 3)[:, [2, 0, 1]]
-        annotations['location'] = np.array(annotations['location']).reshape(
-            -1, 3)
-        annotations['orientation'] = np.array(
-            annotations['orientation']).reshape(-1)
-        anno.append(annotations)
-
-    return anno
 
 def load_preds_bdd(path, use_nms=True, folder=False, json_name='*bdd_3d.json'):
     print("Loading PD file {} ...".format(path))
 
     # A flag indicate using kitti (bottom center) or gta (3D box center) format
     use_kitti_location = 'kitti' in path
-
+    print(path, 'satania 2')
     if folder:
         jsonlists = sorted(glob(osp.join(path, json_name)))
+        jsonlists=jsonlists[1:70]
         jsonlist = [itm for ji in jsonlists for itm in json.load(open(ji, 'r'))]
+        print(len(jsonlist),'satania 23987')
+
     else:
-        jsonlist = json.load(open(path, 'r'))
+        #jsonlist = json.load(open(path), 'r')
+        for filename in islice(sorted(glob(osp.join(path, json_name))), 30):
+            with open(filename, 'r') as f:
+                data = json.load(f)
+                jsonlist.append(data)
+        print(len(jsonlist),'satania 5')
+
+    
 
     assert len(jsonlist) > 0, "{} has no files".format(path)
-
     anno = []
     for idx, trackinfo in enumerate(jsonlist):
         annotations = {}
@@ -148,4 +100,65 @@ def load_preds_bdd(path, use_nms=True, folder=False, json_name='*bdd_3d.json'):
         anno.append(annotations)
 
     return anno
+
+def load_annos_bdd(path, folder=True, json_name='*/*_final.json'):
+    print("Loading GT file {} ...".format(path))
+    
+    if folder:
+        jsonlist = sorted(glob(osp.join(path, json_name)))
+    else:
+        jsonlist= json.load(open(path), 'r')
+    assert len(jsonlist) > 0, "{} has no files".format(path)
+    
+    anno = []
+    jsonlist=jsonlist[1:32018] #legato al 75 sopra
+    print (len(jsonlist))
+
+    for idx, trackjson in enumerate(jsonlist):
+        if folder:
+            trackinfo = json.load(open(trackjson, 'r'))
+        else:
+            trackinfo = trackjson
+   
+        annotations = {}
+        annotations.update({
+            'name': [],
+            'truncated': [],
+            'occluded': [],
+            'alpha': [],
+            'bbox': [],
+            'dimensions': [],
+            'location': [],
+            'orientation': []
+        })
+        
+        for obj in trackinfo['labels']:
+            if not obj['attributes']['ignore']:
+                annotations['name'].append('Car')
+                annotations['truncated'].append(obj['attributes']['truncated'])
+                annotations['occluded'].append(obj['attributes']['occluded'])
+                annotations['bbox'].append(
+                            [obj['box2d']['x1'], obj['box2d']['y1'],
+                             obj['box2d']['x2'], obj['box2d']['y2']])
+                annotations['alpha'].append(obj['box3d']['alpha'])
+                annotations['dimensions'].append(obj['box3d']['dimension'])
+                annotations['location'].append(obj['box3d']['location'])
+                annotations['orientation'].append(obj['box3d']['orientation'])
+
+        annotations['name'] = np.array(annotations['name'])
+        annotations['truncated'] = np.array(annotations['truncated'])
+        annotations['occluded'] = np.array(annotations['occluded'])
+        annotations['alpha'] = np.array(annotations['alpha']).astype(
+            'float')
+        annotations['bbox'] = np.array(annotations['bbox']).astype(
+            'float').reshape(-1, 4)
+        annotations['dimensions'] = np.array(
+            annotations['dimensions']).reshape(-1, 3)[:, [2, 0, 1]]
+        annotations['location'] = np.array(annotations['location']).reshape(
+            -1, 3)
+        annotations['orientation'] = np.array(
+            annotations['orientation']).reshape(-1)
+        anno.append(annotations)
+    return anno
+
 

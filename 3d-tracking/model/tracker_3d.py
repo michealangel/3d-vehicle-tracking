@@ -146,8 +146,8 @@ class Tracker3D:
         detboxes, detdepths, detpoints = tu.construct2dlayout(world_coords, dims, roty,
                                              self.cam_calib,
                                              self.cam_pose)
-
-        # Association
+        #print(detboxes)  
+         # Association
         idxes_order = np.argsort(trkdepths)
         boxes_order = []
         for idx in idxes_order:

@@ -97,13 +97,13 @@ class Model(nn.Module):
         num_imgs = image.size(0)
         n_gt_box = box_info['n_box'].cpu().numpy()
         n_pd_box = torch.sum(rois[:, :, 4] > 0, dim=1).cpu().numpy()
-
+        #print('ROIS OF PD',box_info['rois_pd'])
         # Check number of boxes
         num_rois = int(np.sum(n_gt_box))  # get n_gt_box of this frame
         if (n_gt_box == 0).any(): print("GT is empty")
         num_det = int(np.sum(n_pd_box))  # get n_pd_box of this frame
         if (n_pd_box == 0).any(): print("Prediction is empty")
-
+        #print('N°PD box=',n_pd_box, 'N°GT box=',n_gt_box)
         # Make sure if n_gt_box and n_pd_box are the same during training
         if phase in ['train', 'val']:
             assert (n_pd_box == n_gt_box).any(), \

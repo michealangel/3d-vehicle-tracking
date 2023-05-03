@@ -207,7 +207,7 @@ if __name__ == '__main__':
         cfg.TRAIN.USE_FLIPPED = False  # not ready
         cfg.USE_GPU_NMS = True
         cfg.RUN_POSE = True
-        cfg.FOCAL = 935.3074360871937
+        cfg.FOCAL = 960.0 #935.3074360871937
         cfg.DATASET = 'gta'
 
     args.cfg_file = "cfgs/{}_ls.yml".format(

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-GPU_ID=0,1,2,3
+GPU_ID=0 #,1,2,3
 DATASET="gta_det"
 NET="res101"
-BATCH_SIZE=8
+BATCH_SIZE=1
 WORKER_NUMBER=4
 LEARNING_RATE=1e-3
 DECAY_STEP=10
@@ -28,8 +28,8 @@ CUDA_VISIBLE_DEVICES=${GPU_ID} python trainval_net.py \
     --mGPUs \
     --epochs ${EPOCH} \
     --o adam \
-    #--checksession ${LOADSESSION} \
-    #--checkepoch ${LOADEPOCH} \
-    #--checkpoint ${LOADCHECKPOINT} 
+    --checksession ${LOADSESSION} \
+    --checkepoch ${LOADEPOCH} \
+    --checkpoint ${LOADCHECKPOINT} 
 
 echo $(whoami)" : "${SESSION}_${LOADEPOCH}_${LOADCHECKPOINT}" Finish!"

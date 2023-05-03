@@ -127,6 +127,7 @@ def plot_3D_box_pd(info_gt, info_pd, args, session_name):
             'tracking',
             '_'.join([str(n) for n in args.select_seq])),
             FOURCC, args.fps, (resW, resH))
+        print('Il nome è:', vid_trk)
         vid_bev = cv2.VideoWriter('{}_{}_{}_{}.mp4'.format(
             session_name,
             args.box_key,
@@ -149,6 +150,7 @@ def plot_3D_box_pd(info_gt, info_pd, args, session_name):
 
         for n_frame, (pd_boxes, gt_boxes) in enumerate(
                 zip(pd_seq['frames'], gt_seq['frames'])):
+            print(n_frame)
             if n_frame % 100 == 0:
                 print(n_frame)
 
@@ -263,7 +265,7 @@ def plot_3D_box_pd(info_gt, info_pd, args, session_name):
                 plt.clf()
 
     if args.is_save:
-        vid_trk.release()
+        vid_trk.release() #chiude il video
         vid_bev.release()
 
 
@@ -328,6 +330,7 @@ def plot_3D_box(info_gt, info_pd, args, session_name):
                 box_gt = np.array(anno['box']).astype(int)
                 h_gt, w_gt, l_gt = anno['dim']
                 depth_gt = anno['depth']
+                print(depth_gt, anno['dim'], anno['id'])
                 alpha_gt = anno['alpha']
                 xc_gt, yc_gt = anno['xc'], anno['yc']
 
@@ -460,7 +463,7 @@ def plot_3D_box(info_gt, info_pd, args, session_name):
                 while(key not in [ord('q'), ord(' '), 27]):
                     cv2.imshow('preview', cv2.resize(rawimg, (resW, resH)))
                     key = cv2.waitKey(1)
-
+                    print('ciao',key)
                 if key == 27:
                     cv2.destroyAllWindows()
                     return
@@ -483,7 +486,7 @@ def save_vid(info_gt, info_pd, session_name, args):
     # Loop over save_range and plot the BEV
     print("Total {} frames. Now saving...".format(
         sum([len(seq['frames']) for seq in info_pd])))
-    # plot_3D_box(info_gt, info_pd, args, session_name)
+    plot_3D_box(info_gt, info_pd, args, session_name)
     plot_3D_box_pd(info_gt, info_pd, args, session_name)
     print("Done!")
 
@@ -535,7 +538,7 @@ def merge_vid(vidname1, vidname2, outputname):
     idx = 0
     while (cap1.isOpened() and cap2.isOpened() and idx < num_frames):
         if idx % 100 == 0:
-            print(idx)
+            print('ciao idx', idx)
         if (idx % (fps / fps1) == 0.0):
             # print(idx, fps/fps2, "1")
             ret1, frame1 = cap1.read()
@@ -560,18 +563,19 @@ def merge_vid(vidname1, vidname2, outputname):
 
 
 def main():
-    _METHOD_NAMES = ['none', 'kf2ddeep', 'kf3ddeep', 'lstmdeep', 'lstmoccdeep']
+    #_METHOD_NAMES = ['none', 'kf2ddeep', 'kf3ddeep', 'lstmdeep', 'lstmoccdeep']
     # _METHOD_NAMES = ['none', 'kf2d', 'kf2ddeep', 'kf3d',
     # 'kf3ddeep', 'lstm', 'lstmdeep', 'occdeep',
     # 'kf3doccdeep', 'lstmoccdeep']
-    #_METHOD_NAMES = ['lstm']
-
+    _METHOD_NAMES = ['lstm']
+    
     output_path = '{}/{}_{}_{}_{}_set/'.format(OUTPUT_PATH, 
                                             args.session, 
                                             args.epoch, 
                                             args.dataset, 
                                             args.split)
-
+    print('check 0')
+    print('Salvo?',args.is_save,'Percorso:', output_path)
     # Get informations
     for name in _METHOD_NAMES:
         session_name = "{}_{}".format(name, args.setting)
@@ -580,7 +584,7 @@ def main():
         info_pd = json.load(open(join(output_path, '{ID}_pd.json'.format(
             **{'ID': session_name})), 'r'))
         save_vid(info_gt, info_pd, session_name, args)
-
+        print('check 1')
         if args.is_merge:
             # Merge two video vertically
             seq_id = '_'.join([str(n) for n in args.select_seq])
@@ -589,6 +593,8 @@ def main():
             vidname2 = '{}_{}_{}_{}.mp4'.format(session_name, args.box_key,
                                                 'birdsview', seq_id)
             outputname = '{}_{}_compose'.format(vidname1, vidname2)
+            print('check 2')
+
             merge_vid(vidname1, vidname2, outputname)
 
 

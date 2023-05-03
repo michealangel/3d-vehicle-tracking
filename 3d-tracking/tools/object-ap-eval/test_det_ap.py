@@ -30,9 +30,9 @@ def show_result(gt_annos, pd_annos, obj_type=[0]):
 
     result_kitti = get_official_eval_result(gt_annos, pd_annos, obj_type)
     print(result_kitti)
-
-    result_coco = get_coco_eval_result(gt_annos, pd_annos, obj_type)
-    print(result_coco)
+   # result_coco = get_coco_eval_result(gt_annos, pd_annos, obj_type)
+   # print(result_coco)
+    print('ciao 1')
 
 
 def main():
@@ -66,6 +66,7 @@ def main():
 
         # Show KITTI, COCO evaluation results
         show_result(gt_annos, pd_annos)
+
 
 
 if __name__ == '__main__':

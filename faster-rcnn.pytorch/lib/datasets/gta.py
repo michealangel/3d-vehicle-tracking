@@ -224,14 +224,18 @@ class gta_det(imdb):
 
 
     def _get_ann_file(self):
+        print(osp.join(self._data_path, 'train'), "Ciao non so che sia")
         if cfg.USE_DEBUG_SET:
             return osp.join(self._data_path, 'train')  # train
         else:
             return osp.join(self._data_path, cfg.ANNO_PATH)  # train or val
+            #return osp.join(self._data_path, 'train')  # train or val
 
     def _read_dataset(self):
         ann_file = self._get_ann_file()
+        print(ann_file, 'Ciao Ann')
         jsonfiles = sorted(glob(osp.join(ann_file, 'label', '*.json')))
+        print("Ciao json", len(jsonfiles))
         self.dataset = []
         self.endvid = []
         for jf in jsonfiles:

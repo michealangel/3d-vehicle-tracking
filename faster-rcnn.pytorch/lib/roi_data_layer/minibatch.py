@@ -28,6 +28,7 @@ def get_minibatch(roidb, num_classes, train=True):
             format(num_images, cfg.TRAIN.BATCH_SIZE)
 
     # Get the input image blob, formatted for caffe
+    #print('ciao roidb',roidb)
     im_blob, im_scales = _get_image_blob(roidb, random_scale_inds)
 
     blobs = {'data': im_blob}
@@ -70,13 +71,14 @@ def _get_image_blob(roidb, scale_inds):
     scales.
     """
     num_images = len(roidb)
+    #print(num_images)
 
     processed_ims = []
     im_scales = []
     for i in range(num_images):
         im = cv2.imread(roidb[i]['image'])
         #im = imread(roidb[i]['image'])
-
+        print (im)
         if len(im.shape) == 2:
             im = im[:, :, np.newaxis]
             im = np.concatenate((im, im, im), axis=2)

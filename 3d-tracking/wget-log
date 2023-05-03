@@ -1,0 +1,11 @@
+--2023-04-02 17:24:51--  http://dl.yf.io/bdd-data/3d-vehicle-tracking/label/gta_3d_tracking_val_label_0009.zip
+Resolving dl.yf.io (dl.yf.io)... 128.32.162.150
+Connecting to dl.yf.io (dl.yf.io)|128.32.162.150|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 6613880 (6.3M) [application/zip]
+Saving to: ‘/media/michelangelo/7E9264A192645F9F/data/zip/gta_3d_tracking_val_label_0009.zip’
+
+gta_3d_tracking_val  27%[====>               ]   1.73M  32.7KB/s    in 70s     
+
+
+Cannot write to ‘/media/michelangelo/7E9264A192645F9F/data/zip/gta_3d_tracking_val_label_0009.zip’ (Transport endpoint is not connected).
